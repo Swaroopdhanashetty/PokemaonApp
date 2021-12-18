@@ -7,20 +7,27 @@ const PokemonList = ({ setFav, fav }) => {
   const [allPokemons, setAllPokemons] = useState([]);
   const [showModel, setShowModel] = useState(false);
   console.log(showModel);
-  // const [type, setType] = useState([]);
+  const [type, setType] = useState([]);
   const [search, setSearch] = useState("");
   console.log(search);
   const [pokDetails, setPokDetails] = useState([]);
-  // const [select, setSelect] = useState("");
-  // console.log(select);
+  const [select, setSelect] = useState("");
+  console.log(select);
   const [loading, setLoading] = useState(false);
   const [loadMore, setLoadMore] = useState(
     "https://pokeapi.co/api/v2/pokemon?limit=10"
   );
 
+  const newType = type.filter(function (elem, pos) {
+    return type.indexOf(elem) == pos;
+  });
+
   let newFav = [...fav];
+  // const check = newFav.filter((i) => i i.id);
+  // console.log("check" + check);
 
   const addToCart = (pokemon) => {
+    alert("Card Successfully Added to FavoriteList");
     let itemInFav = newFav.find((item) => pokemon.name === item.name);
     if (!itemInFav) {
       itemInFav = {
@@ -40,6 +47,12 @@ const PokemonList = ({ setFav, fav }) => {
     console.log(pokemon);
   };
 
+  const searchItems = (searchValue) => {
+    setSelect(searchValue);
+    allPokemons.filter((pokemon) => {
+      pokemon.types[0].type.name.includes(select);
+    });
+  };
   const getAllPokemons = () => {
     setLoading(true);
     axios.get(loadMore).then((res) => {
@@ -53,6 +66,9 @@ const PokemonList = ({ setFav, fav }) => {
               const data = res.data;
               console.log(data);
 
+              setType((type) => [...type, data.types[0].type.name]);
+
+              console.log(type);
               setAllPokemons((currentList) => [...currentList, data]);
               console.log(allPokemons);
             });
@@ -84,11 +100,19 @@ const PokemonList = ({ setFav, fav }) => {
               placeholder="Search..."
               onChange={(e) => setSearch(e.target.value)}
             />
+            {/* <select onChange={(e) => searchItems(e.target.value)}>
+              {newType.map((i) => (
+                <option key={i} value={i}>
+                  {i}
+                </option>
+              ))}
+            </select> */}
+            {/* <p>{`Your selected ${value}`}</p> */}
           </div>
-          <div className=" grid grid-cols-1   gap-10 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 m-10 w-auto bg-gray-800">
+          <div class=" grid grid-cols-1   gap-10 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-2 m-10 w-auto bg-gray-800">
             {allPokemons
               .filter((val) => {
-                if (search === "") {
+                if (search == "") {
                   return val;
                 } else if (
                   val.name.toLowerCase().includes(search.toLowerCase())
@@ -129,6 +153,7 @@ const PokemonList = ({ setFav, fav }) => {
                             ? "opacity-50 cursor-not-allowed disabled:opacity-50"
                             : " hover:bg-green-800 duration-300"
                         }`}
+                        // disabled={disable}
                         onClick={() => addToCart(pokemon)}
                       >
                         Add to Favorite List
@@ -140,7 +165,7 @@ const PokemonList = ({ setFav, fav }) => {
           </div>
           <div className="flex justify-center">
             <button
-              className="bg-blue-500 flex justify-center items-center hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              class="bg-blue-500 flex justify-center items-center hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => getAllPokemons()}
             >
               Load More

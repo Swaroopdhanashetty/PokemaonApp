@@ -1,13 +1,10 @@
-import { Route, Routes } from "react-router-dom";
 import React, { useState } from "react";
-import Homepage from "./pages/Home";
-import PokemonList from "./pages/PokemonList";
-import FavoriteList from "./components/FavoriteList";
-import PokemonListWithFav from "./pages/PokemonListWithFav";
+import PokemonList from "./PokemonList";
+import FavoriteList from "../components/FavoriteList";
 
 const PAGE_POKEMON = "PokemonList";
 const PAGE_FAV = "FavoriteList";
-const App = () => {
+const PokemonListWithFav = () => {
   const [fav, setFav] = useState([]);
   const [page, setPage] = useState(PAGE_POKEMON);
   const navigateTo = (nextPage) => {
@@ -15,13 +12,7 @@ const App = () => {
   };
   return (
     <div className="">
-      {
-        <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/PokemonListWithFav" element={<PokemonListWithFav />} />
-        </Routes>
-      }
-      {/* <ul class="flex  justify-around py-5">
+      <ul class="flex  justify-around py-5">
         <li class="flex justify-center ">
           <button
             className={`text-center block border border-blue-500 rounded  py-2 px-4 ${
@@ -44,8 +35,8 @@ const App = () => {
         </li>
       </ul>
       {page === PAGE_POKEMON && <PokemonList fav={fav} setFav={setFav} />}
-      {page === PAGE_FAV && <FavoriteList fav={fav} setFav={setFav} />} */}
+      {page === PAGE_FAV && <FavoriteList fav={fav} setFav={setFav} />}
     </div>
   );
 };
-export default App;
+export default PokemonListWithFav;
